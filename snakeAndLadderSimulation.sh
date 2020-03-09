@@ -5,12 +5,13 @@ echo "**********Welcome to Snake & Ladder Problems**********"
 NO_PLAY=0
 LADDER=1
 SNAKE=2
-STARTPOSITION=0
-WINNINGPOSITION=100
+START_POSITION=0
+WINNING_POSITION=100
 
 #VARIABLES
 position=0
 count=0
+player=2
 
 #function is used to rolls the die to get a number
 function dieRolls(){
@@ -39,19 +40,33 @@ function toChecksOption(){
 		esac
 }
 
-#it is used to repeat till the player reaches the winning position
-while [[ $position != $WINNINGPOSITION ]]
-do
-	toChecksOption
-
-	if [ $position -lt 0 ]
+#
+function toCheckExactPosition(){
+	if [ $position -lt $START_POSITION ]
 	then
-		position=$STARTPOSITION
-
-	elif [ $position -gt $WINNINGPOSITION ]
+		position=$START_POSITION
+	elif [ $position -gt $WINNING_POSITION ]
 	then
 		position=$(($position-$dieGeneratedValues))
 	fi
-		echo "count no: $count position is:$position" 
+}
+
+#function is used to switch players turn
+function toSwitchPlayer(){
+	if [ $player -eq 1 ]
+	then
+		player=2
+	else
+		player=1
+	fi
+}
+
+#it is used to repeat till the player reaches the winning position
+while [[ $position != $WINNING_POSITION ]]
+do
+	toSwitchPlayer
+   toChecksOption
+	toCheckExactPosition
 done
 
+echo "player $player won"
