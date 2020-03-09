@@ -12,40 +12,43 @@ WINNINGPOSITION=100
 position=0
 
 #function is used to rolls the die to get a number
-function DieRolls(){
-RandomNumber=$(($RANDOM%6+1))
-echo $RandomNumber
+function dieRolls(){
+	randomNumber=$(($RANDOM%6+1))
+	echo $randomNumber
 }
 
 #function is used to checks option whether they are no play,ladder or snake
 function toChecksOption(){
-checkOption=$(($RANDOM%3))
-dieGeneratedValues=$(DieRolls)
-case $checkOption in
-	0)
-		position=$position
-		;;
-	1)
-		position=$(($position+$dieGeneratedValues))
-		;;
-	2)
-		position=$(($position-$dieGeneratedValues))
-	   ;;
-	*)
-		echo "enter proper choice"
-		;;
-esac
+	checkOption=$(($RANDOM%3))
+	dieGeneratedValues=$(dieRolls)
+		case $checkOption in
+			0)
+				position=$position
+				;;
+			1)
+				position=$(($position+$dieGeneratedValues))
+				;;
+			2)
+				position=$(($position-$dieGeneratedValues))
+				;;
+			*)
+				echo "enter proper choice"
+				;;
+		esac
 }
 
 #it is used to repeat till the player reaches the winning position
-while [ $position -le $WINNINGPOSITION ]
+while [[ $position != $WINNINGPOSITION ]]
 do
 	toChecksOption
+
+	if [ $position -lt 0 ]
+	then
+		position=$STARTPOSITION
+
+	elif [ $position -gt $WINNINGPOSITION ]
+	then
+		position=$(($position-$dieGeneratedValues))
+	fi
 done
 
-#it is used check if player position moves below 0
-if [ $position -le 0 ]
-then
-	position=$STARTPOSITION
-fi
-	echo $position
