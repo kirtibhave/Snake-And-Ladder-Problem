@@ -10,6 +10,7 @@ WINNINGPOSITION=100
 
 #VARIABLES
 position=0
+count=0
 
 #function is used to rolls the die to get a number
 function dieRolls(){
@@ -21,6 +22,7 @@ function dieRolls(){
 function toChecksOption(){
 	checkOption=$(($RANDOM%3))
 	dieGeneratedValues=$(dieRolls)
+	((count++))
 		case $checkOption in
 			0)
 				position=$position
@@ -50,5 +52,6 @@ do
 	then
 		position=$(($position-$dieGeneratedValues))
 	fi
+		echo "count no: $count position is:$position" 
 done
 
